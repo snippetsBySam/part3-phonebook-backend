@@ -26,10 +26,13 @@ let persons = [
   }
 ]
 
+
+// all persons
 app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+// info endpoint
 app.get('/info', (request, response) => {
   let personsCount = persons.length
   let currentTime = Date()
@@ -39,6 +42,19 @@ app.get('/info', (request, response) => {
     <p>${currentTime}</p>
     </div>`
   )
+})
+
+//single person endpoint
+app.get('/api/persons/:id', (request, response) => {
+  console.log('person');
+  const id = Number(request.params.id)
+  console.log('id', id);
+  const person = persons.find(person => person.id === id)
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
 })
 
 const PORT = 3001
