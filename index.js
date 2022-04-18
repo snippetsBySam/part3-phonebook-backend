@@ -67,6 +67,18 @@ const generateId = () => Math.floor(Math.random() * 1000)
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: 'name AND number required'
+    })
+  }
+
+  if (persons.find(person => person.name.toLowerCase() === body.name.toLowerCase())) {
+    return response.status(400).json({
+      error: 'name already exists'
+    })
+  }
+
   console.log(body);
   const person = {
     id: generateId(),
