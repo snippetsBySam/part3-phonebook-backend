@@ -26,7 +26,27 @@ let persons = [
 ]
 
 app.use(express.json())
-app.use(morgan('tiny'))
+morgan.token('tinyPost', (tokens,req, res) => {
+  // tiny config
+  let logData = [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms'
+  ].join(' ')
+  // add response body if post request
+  if (req.method === 'POST') {
+    return [
+      logData,
+      JSON.stringify(req.body)
+    ].join(' ')
+  }
+  else {
+    return logData
+  }
+})
+app.use(morgan('tinyPost'))
 
 // all persons
 app.get('/api/persons', (request, response) => {
@@ -80,7 +100,6 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  console.log(body);
   const person = {
     id: generateId(),
     name: body.name,
