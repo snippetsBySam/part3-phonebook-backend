@@ -49,6 +49,7 @@ morgan.token('tinyPost', (tokens,req, res) => {
 })
 app.use(morgan('tinyPost'))
 app.use(cors())
+app.use(express.static('build'))
 
 // all persons
 app.get('/api/persons', (request, response) => {
