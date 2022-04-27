@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
 
 let persons = [
   { 
@@ -47,6 +48,7 @@ morgan.token('tinyPost', (tokens,req, res) => {
   }
 })
 app.use(morgan('tinyPost'))
+app.use(cors())
 
 // all persons
 app.get('/api/persons', (request, response) => {
